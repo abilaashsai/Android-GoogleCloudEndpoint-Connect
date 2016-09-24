@@ -1,13 +1,16 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.Joke;
+import com.example.jokeandroidlibrary.AndroidLibraryMainActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -16,6 +19,7 @@ import com.google.android.gms.ads.AdView;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+    Button button;
 
     public MainActivityFragment() {
     }
@@ -24,6 +28,7 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
+        button=(Button)root.findViewById(R.id.tellJokeButton);
 
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
         Joke joke=new Joke();
@@ -37,6 +42,17 @@ public class MainActivityFragment extends Fragment {
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mAdView.loadAd(adRequest);
+        FetchJoke fetchJoke=new FetchJoke();
+        fetchJoke.execute();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getContext(),AndroidLibraryMainActivity.class);
+                Joke joke=new Joke();
+                myIntent.putExtra("JOKE",joke.getJoke());
+                startActivity(myIntent);
+            }
+        });
 
         return root;
     }
