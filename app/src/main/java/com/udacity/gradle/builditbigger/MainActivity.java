@@ -45,8 +45,8 @@ public class MainActivity extends ActionBarActivity {
 //    }
 //    public void launchLibraryActivity(View view) {
 //        Intent myIntent = new Intent(this, AndroidLibraryMainActivity.class);
-//        Joke joke=new Joke();
-//        myIntent.putExtra("JOKE",joke.getJoke());
+//        Joke jokeString=new Joke();
+//        myIntent.putExtra("JOKE",jokeString.getJoke());
 //        startActivity(myIntent);
 //    }
 

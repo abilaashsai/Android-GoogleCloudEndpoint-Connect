@@ -6,9 +6,12 @@
 
 package com.example.abilashr.myapplication.backend;
 
+import com.example.Joke;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+
+import javax.inject.Named;
 
 /**
  * An endpoint class we are exposing
@@ -28,9 +31,10 @@ public class MyEndpoint {
      * A simple endpoint method that takes a name and says Hi back
      */
     @ApiMethod(name = "sayHi")
-    public MyBean sayHi() {
+    public MyBean sayHi(@Named("name") String name) {
         MyBean response = new MyBean();
-        response.setData("{\"joke\":\"hahaha\"}");
+        Joke joke=new Joke();
+        response.setData(joke.getJoke());
 
         return response;
     }
