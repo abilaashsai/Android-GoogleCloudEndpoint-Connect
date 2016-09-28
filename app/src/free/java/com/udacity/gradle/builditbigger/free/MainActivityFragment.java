@@ -12,13 +12,17 @@ import android.widget.Button;
 
 import com.example.Joke;
 import com.example.jokeandroidlibrary.AndroidLibraryMainActivity;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.udacity.gradle.builditbigger.R;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class MainActivityFragment extends Fragment {
     Button button;
     String jokeString;
+    FetchJoke fetchJoke;
+    InterstitialAd mInterstitialAd;
+
 
     public MainActivityFragment() {
     }
@@ -31,6 +35,19 @@ public class MainActivityFragment extends Fragment {
 
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
         final Joke joke=new Joke();
+        mInterstitialAd = new InterstitialAd(getActivity());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                startDetailActivity();
+            }
+        });
+
+        requestNewInterstitial();
+
         //Toast.makeText(getContext(),jokeString.getJoke(),Toast.LENGTH_SHORT).show();
 
 
@@ -41,18 +58,35 @@ public class MainActivityFragment extends Fragment {
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mAdView.loadAd(adRequest);
-        FetchJoke fetchJoke=new FetchJoke(this);
+        fetchJoke=new FetchJoke(this);
         fetchJoke.execute(new Pair<Context, String>(getContext(), "Manfred"));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getContext(),AndroidLibraryMainActivity.class);
-                myIntent.putExtra("JOKE", jokeString);
-                startActivity(myIntent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                }else{
+                    startDetailActivity();
+                }
             }
         });
 
         return root;
     }
+
+    private void startDetailActivity() {
+        Intent myIntent = new Intent(getContext(), AndroidLibraryMainActivity.class);
+        myIntent.putExtra("JOKE", jokeString);
+        startActivity(myIntent);
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
+    }
+
 }

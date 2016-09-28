@@ -13,15 +13,22 @@
     android:id="@+id/instructions_text_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/instructions" />
+    android:text="@string/instructions"/>
 
   <Button
+    android:id="@+id/tellJokeButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@+id/instructions_text_view"
-    android:id="@+id/tellJokeButton"
     android:text="@string/button_text"
-
     />
+
+  <ProgressBar
+    android:id="@+id/progressBar1"
+    style="?android:attr/progressBarStyleLarge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/instructions_text_view"
+    android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

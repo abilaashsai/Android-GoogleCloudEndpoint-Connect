@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.Joke;
 import com.example.jokeandroidlibrary.AndroidLibraryMainActivity;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.udacity.gradle.builditbigger.R;
 
 
 /**
@@ -23,17 +21,21 @@ import com.udacity.gradle.builditbigger.R;
 public class MainActivityFragment extends Fragment {
     Button button;
     String jokeString;
+    ProgressBar spinner;
 
     public MainActivityFragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-        button=(Button)root.findViewById(R.id.tellJokeButton);
+        button = (Button) root.findViewById(R.id.tellJokeButton);
+        spinner = (ProgressBar) root.findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
 
-        final Joke joke=new Joke();
+        final Joke joke = new Joke();
         //Toast.makeText(getContext(),jokeString.getJoke(),Toast.LENGTH_SHORT).show();
 
 
@@ -41,15 +43,21 @@ public class MainActivityFragment extends Fragment {
         // get test ads on a physical device. e.g.
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
 
-        FetchJoke fetchJoke=new FetchJoke(this);
+        FetchJoke fetchJoke = new FetchJoke(this);
         fetchJoke.execute(new Pair<Context, String>(getContext(), "Manfred"));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getContext(),AndroidLibraryMainActivity.class);
-                myIntent.putExtra("JOKE", jokeString);
-                startActivity(myIntent);
+
+                    if((jokeString.contains("failed"))) {
+                        spinner.setVisibility(View.VISIBLE);
+                    } else {
+                        spinner.setVisibility(View.GONE);
+                        Intent myIntent = new Intent(getContext(), AndroidLibraryMainActivity.class);
+                        myIntent.putExtra("JOKE", jokeString);
+                        startActivity(myIntent);
+                    }
             }
         });
 
