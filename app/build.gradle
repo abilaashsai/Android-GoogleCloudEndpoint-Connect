@@ -13,10 +13,15 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        shrunk{
+            minifyEnabled true
+            shrinkResources true
         }
     }
     productFlavors {
@@ -27,7 +32,28 @@ android {
             applicationId "com.udacity.gradle.builditbigger.paid"
         }
     }
+
 }
+
+task runAppEngine(dependsOn: ":backend:appengineRun") {
+    project(":backend").afterEvaluate { backend ->
+        backend.extensions.appengine.daemon = true
+    }
+    doLast {
+        println "started the server!"
+    }
+}
+task runEndpointsAndTests(dependsOn: 'runAppEngine') {
+    sourceSets {
+        functionalTest {
+            resources {
+                srcDir file('src/androidTest/java/com/udacity/gradle/builditbigger/FetchJokeTest')
+                println "Tests passsed!"
+            }
+        }
+    }
+}
+runEndpointsAndTests.finalizedBy ":backend:appengineStop"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

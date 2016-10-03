@@ -44,18 +44,18 @@ public class MainActivityFragment extends Fragment {
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
 
         FetchJoke fetchJoke = new FetchJoke(this);
-        fetchJoke.execute(new Pair<Context, String>(getContext(), "Manfred"));
+        fetchJoke.execute();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                    if((jokeString.contains("failed"))) {
+                    if((jokeString.contains(getResources().getString(R.string.failed)))) {
                         spinner.setVisibility(View.VISIBLE);
                     } else {
                         spinner.setVisibility(View.GONE);
                         Intent myIntent = new Intent(getContext(), AndroidLibraryMainActivity.class);
-                        myIntent.putExtra("JOKE", jokeString);
+                        myIntent.putExtra(getResources().getString(R.string.joke), jokeString);
                         startActivity(myIntent);
                     }
             }

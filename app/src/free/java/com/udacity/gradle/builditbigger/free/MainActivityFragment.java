@@ -36,7 +36,7 @@ public class MainActivityFragment extends Fragment {
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
         final Joke joke=new Joke();
         mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.ad_unit_id));
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -59,7 +59,7 @@ public class MainActivityFragment extends Fragment {
                 .build();
         mAdView.loadAd(adRequest);
         fetchJoke=new FetchJoke(this);
-        fetchJoke.execute(new Pair<Context, String>(getContext(), "Manfred"));
+        fetchJoke.execute();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,13 +77,13 @@ public class MainActivityFragment extends Fragment {
 
     private void startDetailActivity() {
         Intent myIntent = new Intent(getContext(), AndroidLibraryMainActivity.class);
-        myIntent.putExtra("JOKE", jokeString);
+        myIntent.putExtra(getResources().getString(R.string.joke), jokeString);
         startActivity(myIntent);
     }
 
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .addTestDevice(getResources().getString(R.string.device_id))
                 .build();
 
         mInterstitialAd.loadAd(adRequest);

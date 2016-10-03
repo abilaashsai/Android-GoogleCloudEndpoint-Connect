@@ -3,6 +3,6 @@ package com.example;
 
 public class Joke {
     public String getJoke() {
-        return "Hey this is joke";
+        return "Can a kangaroo jump higher than a house?\nOf course, a house doesn’t jump at all.\n";
     }
 }
