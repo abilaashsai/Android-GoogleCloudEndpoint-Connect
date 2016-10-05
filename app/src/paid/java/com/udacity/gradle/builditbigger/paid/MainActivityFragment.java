@@ -20,7 +20,6 @@ import com.example.jokeandroidlibrary.AndroidLibraryMainActivity;
  */
 public class MainActivityFragment extends Fragment {
     Button button;
-    String jokeString;
     ProgressBar spinner;
 
     public MainActivityFragment() {
@@ -35,29 +34,17 @@ public class MainActivityFragment extends Fragment {
         spinner = (ProgressBar) root.findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
 
-        final Joke joke = new Joke();
-        //Toast.makeText(getContext(),jokeString.getJoke(),Toast.LENGTH_SHORT).show();
-
 
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
 
-        FetchJoke fetchJoke = new FetchJoke(this);
-        fetchJoke.execute();
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                    if((jokeString.contains(getResources().getString(R.string.failed)))) {
-                        spinner.setVisibility(View.VISIBLE);
-                    } else {
-                        spinner.setVisibility(View.GONE);
-                        Intent myIntent = new Intent(getContext(), AndroidLibraryMainActivity.class);
-                        myIntent.putExtra(getResources().getString(R.string.joke), jokeString);
-                        startActivity(myIntent);
-                    }
+                spinner.setVisibility(View.VISIBLE);
+                FetchJoke fetchJoke = new FetchJoke(MainActivityFragment.this);
+                fetchJoke.execute();
             }
         });
 

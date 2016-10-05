@@ -1,8 +1,11 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.view.View;
 
 import com.example.abilashr.myapplication.backend.myApi.MyApi;
+import com.example.jokeandroidlibrary.AndroidLibraryMainActivity;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -24,7 +27,7 @@ public class FetchJoke extends AsyncTask<Void, Void, String> {
         if(myApiService == null) {
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
-                    .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+                    .setRootUrl("http://10.0.3.2:8080/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -45,6 +48,10 @@ public class FetchJoke extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        mainActivityFragment.jokeString = result;
+        Intent myIntent = new Intent(mainActivityFragment.getContext(), AndroidLibraryMainActivity.class);
+        myIntent.putExtra(mainActivityFragment.getResources().getString(R.string.joke), result);
+        mainActivityFragment.spinner.setVisibility(View.GONE);
+        mainActivityFragment.startActivity(myIntent);
+
     }
 }

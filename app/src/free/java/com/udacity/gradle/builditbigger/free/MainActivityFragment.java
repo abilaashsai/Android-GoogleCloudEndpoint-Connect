@@ -19,10 +19,8 @@ import com.google.android.gms.ads.InterstitialAd;
 
 public class MainActivityFragment extends Fragment {
     Button button;
-    String jokeString;
-    FetchJoke fetchJoke;
     InterstitialAd mInterstitialAd;
-
+    FetchJoke fetchJoke;
 
     public MainActivityFragment() {
     }
@@ -31,10 +29,10 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-        button=(Button)root.findViewById(R.id.tellJokeButton);
+        button = (Button) root.findViewById(R.id.tellJokeButton);
 
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
-        final Joke joke=new Joke();
+        final Joke joke = new Joke();
         mInterstitialAd = new InterstitialAd(getActivity());
         mInterstitialAd.setAdUnitId(getResources().getString(R.string.ad_unit_id));
 
@@ -42,14 +40,11 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onAdClosed() {
                 requestNewInterstitial();
-                startDetailActivity();
+                fetchJoke.startDetailActivity();
             }
         });
 
         requestNewInterstitial();
-
-        //Toast.makeText(getContext(),jokeString.getJoke(),Toast.LENGTH_SHORT).show();
-
 
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
@@ -58,27 +53,19 @@ public class MainActivityFragment extends Fragment {
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mAdView.loadAd(adRequest);
-        fetchJoke=new FetchJoke(this);
-        fetchJoke.execute();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mInterstitialAd.isLoaded()) {
+                if(mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
-                }else{
-                    startDetailActivity();
                 }
+                fetchJoke = new FetchJoke(MainActivityFragment.this);
+                fetchJoke.execute();
             }
         });
 
         return root;
-    }
-
-    private void startDetailActivity() {
-        Intent myIntent = new Intent(getContext(), AndroidLibraryMainActivity.class);
-        myIntent.putExtra(getResources().getString(R.string.joke), jokeString);
-        startActivity(myIntent);
     }
 
     private void requestNewInterstitial() {
