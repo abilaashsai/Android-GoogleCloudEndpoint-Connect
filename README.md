@@ -4,10 +4,10 @@ This project uses Gradle to build a joke-telling app, factoring functionality in
 
 ##Features 
  - This project has java library - joketeller that returns the joke. 
- - The joke is provided through Google Cloud Endpoints.
+ - The joke is provided through **Google Cloud Endpoints**.
  - AndroidLibrary displays the joke when it is called in MainActivity.
- - Espresso is used for writing tests
- - Paid and Free version flavours are provided
+ - **Espresso** is used for writing tests
+ - **Paid and Free flavours** are added.
  - Free version contains **Interstitial Ad**
  - Paid version does not contains Interstitial Ad and uses **Loading Indicator**
  - Gradle scripts for the task that
