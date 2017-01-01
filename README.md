@@ -1,4 +1,4 @@
-### Project 4: Build It Bigger
+#Android-GoogleCloudEndpoint-Connect
 
 1. This project has java library - joketeller that returns the joke. 
 2. The joke is provided through Google Cloud Endpoints.
